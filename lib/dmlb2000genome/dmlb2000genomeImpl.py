@@ -27,7 +27,7 @@ class dmlb2000genome:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "git@github.com:dmlb2000/KBase-Testing-001.git"
-    GIT_COMMIT_HASH = "5f9407be1962a5a78f14941a6786a90651bbdf51"
+    GIT_COMMIT_HASH = "41e16c3ba157525d7da53d053215c46ca529fd93"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
