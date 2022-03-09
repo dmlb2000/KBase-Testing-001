@@ -1,7 +1,8 @@
 [ {
   "module_name" : "annotation_ontology_api",
   "type" : "sdk",
-  "version_tag" : "release"
+  "version_tag" : "release",
+  "file_path" : "https://raw.githubusercontent.com/kbaseapps/annotation_ontology_api/main/annotation_ontology_api.spec"
 }, {
   "module_name" : "DataFileUtil",
   "type" : "sdk",
