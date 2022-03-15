@@ -3,6 +3,8 @@
 import logging
 import os
 import pprint
+import requests
+
 
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.DataFileUtilClient import DataFileUtil
@@ -38,6 +40,7 @@ class dmlb2000genome:
         #BEGIN_CONSTRUCTOR
         self.callback_url = os.environ['SDK_CALLBACK_URL']
         self.shared_folder = config['scratch']
+        self.workspace_url = config['workspace-url']
         logging.basicConfig(format='%(created)s %(levelname)s: %(message)s',
                             level=logging.INFO)
         #END_CONSTRUCTOR
@@ -62,14 +65,17 @@ class dmlb2000genome:
         pp.pprint(genome_ref[0]['data']['cdss'][0])
         print('='*80)
         pp.pprint(genome_ref[0]['data']['mrnas'][0])
+        resp = requests.post("http://172.17.0.2:8080/genome.json", json=dfu.get_objects({'object_refs': [params['parameter_1'],]}))
+        assert resp.status_code == 200
         print('='*80)
-        #pp.pprint(genome_ref[0]['data']['taxon_assignments'])
-        print('='*80)
-        events = annotation_ontology_api(service_ver='dev').get_annotation_ontology_events(params={
+        events = annotation_ontology_api(self.callback_url, service_ver='dev').get_annotation_ontology_events(params={
                 "input_ref": params['parameter_1'],
-                "input_workspace": params['workspace_name']
+                "input_workspace": params['workspace_name'],
+                "workspace-url"  : self.workspace_url
         })
-        pp.pprint(events)
+        pp.pprint(len(events.get('events')[0].get('ontology_terms')))
+        resp = requests.post("http://172.17.0.2:8080/events.json", json=events)
+        assert resp.status_code == 200
         print('='*80)
         report = KBaseReport(self.callback_url)
         report_info = report.create({
